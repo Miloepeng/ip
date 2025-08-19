@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Ego {
-    private static ArrayList<String> items = new ArrayList<>();
+    private static ArrayList<Task> items = new ArrayList<>();
 
     /**
      * Prints separator line
@@ -33,17 +33,26 @@ public class Ego {
     }
 
     /**
-     * Listens to user's input continuously to add or display list
+     * Listens to user's input continuously to add or display Task list. User can also opt to mark Tasks
+     * as done or undone
      */
     public static void echo() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         while (!input.equals("bye")) {
             if (input.equals("list")) {
-                list();
+                listTasks();
+                input = scanner.nextLine();
+            } else if (input.startsWith("mark")){
+                int taskNum = Integer.parseInt(input.substring(5));
+                markTask(taskNum);
+                input = scanner.nextLine();
+            } else if (input.startsWith("unmark")) {
+                int taskNum = Integer.parseInt(input.substring(7));
+                unmarkTask(taskNum);
                 input = scanner.nextLine();
             } else {
-                add(input);
+                addTask(new Task(input));
                 input = scanner.nextLine();
             }
         }
@@ -51,10 +60,10 @@ public class Ego {
     }
 
     /**
-     * Adds a given item to the list and prints a confirmation message
+     * Adds a given task to the list and prints a confirmation message
      * @param item The item to be added to the list
      */
-    public static void add(String item) {
+    public static void addTask(Task item) {
         items.add(item);
         line();
         System.out.println("added: " + item + "\n");
@@ -62,14 +71,40 @@ public class Ego {
     }
 
     /**
-     * Prints all current items in the list along with their index numbers
+     * Prints all current tasks in the list along with their index numbers
      */
-    public static void list() {
+    public static void listTasks() {
         line();
+        String msg = "OK egoist, ready to rock your to-do list?";
+        System.out.println(msg);
         for (int i = 0; i < items.size(); i++) {
             int count = i+1;
-            System.out.println(count + ". " + items.get(i) + "\n");
+            System.out.println(count + "." + items.get(i) + "\n");
         }
+        line();
+    }
+
+    /**
+     * Marks a task as completed based on the task number
+     * @param Tasknum the number to identify the task based on the list
+     */
+    public static void markTask(int Tasknum) {
+        String msg = "Well done egoist, I've marked this task as completed: ";
+        items.get(Tasknum - 1).doTask();
+        line();
+        System.out.println(msg + "\n   " + items.get(Tasknum - 1));
+        line();
+    }
+
+    /**
+     * Unmark a task as not completed based on task number
+     * @param Tasknum the number to identify the task based on the list
+     */
+    public static void unmarkTask(int Tasknum) {
+        String msg = "Alright... I'll mark this task as not done yet...";
+        items.get(Tasknum - 1).undoTask();
+        line();
+        System.out.println(msg + "\n   " + items.get(Tasknum - 1));
         line();
     }
 
