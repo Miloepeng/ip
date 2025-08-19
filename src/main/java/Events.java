@@ -12,6 +12,6 @@ public class Events extends Task{
     public String toString() {
         String duration = "(from: " + this.startDate + " to: "
                 + this.endDate + ")";
-        return "[E]" + super.toString() + " " + duration;
+        return "[E]" + super.toString() + duration;
     }
 }
