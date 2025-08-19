@@ -1,4 +1,13 @@
-package PACKAGE_NAME;
+public class Deadlines extends Task {
+    private String endDate;
 
-public class Deadlines {
+    public Deadlines(String name, String endDate) {
+        super(name);
+        this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "[D]" + super.toString() + " (by: " + this.endDate + ")";
+    }
 }

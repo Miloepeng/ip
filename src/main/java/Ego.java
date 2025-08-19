@@ -51,6 +51,22 @@ public class Ego {
                 int taskNum = Integer.parseInt(input.substring(7));
                 unmarkTask(taskNum);
                 input = scanner.nextLine();
+            } else if (input.startsWith("todo")) {
+                addTask(new ToDos(input.substring(5)));
+                input = scanner.nextLine();
+            } else if (input.startsWith("deadline")) {
+                input = input.substring(9);
+                String[] splitted = input.split("/");
+                String endDate = splitted[1].substring(3);
+                addTask(new Deadlines(splitted[0], endDate));
+                input = scanner.nextLine();
+            } else if (input.startsWith("event")) {
+                input = input.substring(6);
+                String[] splitted = input.split("/");
+                String startDate = splitted[1].substring(5);
+                String endDate = splitted[2].substring(3);
+                addTask(new Events(splitted[0], startDate, endDate));
+                input = scanner.nextLine();
             } else {
                 addTask(new Task(input));
                 input = scanner.nextLine();
@@ -67,6 +83,7 @@ public class Ego {
         items.add(item);
         line();
         System.out.println("added: " + item + "\n");
+        System.out.println("Now you have " + items.size() + " tasks to complete!");
         line();
     }
 

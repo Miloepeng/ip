@@ -1,4 +1,17 @@
-package PACKAGE_NAME;
+public class Events extends Task{
+    private String startDate;
+    private String endDate;
 
-public class Events {
+    public Events(String name, String startDate, String endDate) {
+        super(name);
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        String duration = "(from: " + this.startDate + " to: "
+                + this.endDate + ")";
+        return "[E]" + super.toString() + " " + duration;
+    }
 }
