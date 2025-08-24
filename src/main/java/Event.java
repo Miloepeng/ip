@@ -1,15 +1,18 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents an Event task with a task description alongside the time period the user
  * should complete the task in. Users can also mark the task as done or undone.
  */
 public class Event extends Task{
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Event(String name, String startDate, String endDate) {
         super(name);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = LocalDate.parse(startDate);
+        this.endDate = LocalDate.parse(endDate);
     }
 
     @Override
@@ -20,8 +23,9 @@ public class Event extends Task{
 
     @Override
     public String toString() {
-        String duration = "(from: " + this.startDate + " to: "
-                + this.endDate + ")";
+        String duration = "(from: " +
+                this.startDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " to: "
+                + this.endDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"))+ ")";
         return "[E]" + super.toString() + duration;
     }
 }

@@ -128,7 +128,7 @@ public class Ego {
                         "Your command should be in the format deadline <description>" +
                         " /by <end date>!");
             }
-            String dueDate = splitted[1];
+            String dueDate = splitted[1].trim();
             newTask = new Deadline(splitted[0], dueDate);
             break;
 
@@ -165,8 +165,8 @@ public class Ego {
                         " Your command should be in the format: deadline <description> " +
                         "/from <start date> /to <end date>.");
             }
-            String startDate = splitEvent[0];
-            String endDate = splitEvent[1];
+            String startDate = splitEvent[0].trim();
+            String endDate = splitEvent[1].trim();
             newTask = new Event(event, startDate, endDate);
             break;
 
