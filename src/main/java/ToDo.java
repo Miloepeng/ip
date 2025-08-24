@@ -1,3 +1,7 @@
+/**
+ * Represents a Todo task that has a task description. User can mark
+ * it as either done or undone.
+ */
 public class ToDo extends Task {
     public ToDo(String name) {
         super(name);

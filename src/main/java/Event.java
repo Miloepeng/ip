@@ -1,3 +1,7 @@
+/**
+ * Represents an Event task with a task description alongside the time period the user
+ * should complete the task in. Users can also mark the task as done or undone.
+ */
 public class Event extends Task{
     private String startDate;
     private String endDate;
