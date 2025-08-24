@@ -1,8 +1,12 @@
+import java.io.IOException;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Ego {
-    private static ArrayList<Task> items = new ArrayList<>();
+    private static ArrayList<Task> taskList = new ArrayList<>();
+    private static final String FILE_PATH = "./data/ego.txt";
 
     /**
      * Prints separator line.
@@ -30,6 +34,7 @@ public class Ego {
         String bye = "Farewell... see you soon";
         System.out.println(bye);
         printLine();
+        saveTasks();
     }
 
     /**
@@ -37,6 +42,7 @@ public class Ego {
      * as done or undone.
      */
     public static void echo() {
+        loadTasks();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         while (!input.equals("bye")) {
@@ -166,10 +172,10 @@ public class Ego {
 
         }
 
-        items.add(newTask);
+        taskList.add(newTask);
         printLine();
         System.out.println("Added: " + newTask );
-        System.out.println("Now you have " + items.size() + " tasks to complete!");
+        System.out.println("Now you have " + taskList.size() + " tasks to complete!");
         printLine();
     }
 
@@ -180,9 +186,9 @@ public class Ego {
         printLine();
         String msg = "OK egoist, ready to rock your to-do list?";
         System.out.println(msg);
-        for (int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < taskList.size(); i++) {
             int count = i + 1;
-            System.out.println(count + "." + items.get(i));
+            System.out.println(count + "." + taskList.get(i));
         }
         printLine();
     }
@@ -192,13 +198,13 @@ public class Ego {
      * @param taskNum the number to identify the task based on the list
      */
     public static void markTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > items.size()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + items.size());
+        if (taskNum <= 0 || taskNum > taskList.size()) {
+            throw new EgoException("Wow! Please input a number from 1 to " + taskList.size());
         }
         String msg = "Well done egoist, I've marked this task as completed:\n  ";
-        items.get(taskNum - 1).doTask();
+        taskList.get(taskNum - 1).doTask();
         printLine();
-        System.out.println(msg + items.get(taskNum - 1));
+        System.out.println(msg + taskList.get(taskNum - 1));
         printLine();
     }
 
@@ -207,26 +213,84 @@ public class Ego {
      * @param taskNum the number to identify the task based on the list
      */
     public static void unmarkTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > items.size()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + items.size());
+        if (taskNum <= 0 || taskNum > taskList.size()) {
+            throw new EgoException("Wow! Please input a number from 1 to " + taskList.size());
         }
         String msg = "Alright... I'll mark this task as not done yet...\n  ";
-        items.get(taskNum - 1).undoTask();
+        taskList.get(taskNum - 1).undoTask();
         printLine();
-        System.out.println(msg + items.get(taskNum - 1));
+        System.out.println(msg + taskList.get(taskNum - 1));
         printLine();
     }
 
     public static void deleteTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > items.size()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + items.size());
+        if (taskNum <= 0 || taskNum > taskList.size()) {
+            throw new EgoException("Wow! Please input a number from 1 to " + taskList.size());
         }
         String msg = "Roger, I'll delete this task from your list!\n  ";
-        Task deletedTask = items.remove(taskNum - 1);
+        Task deletedTask = taskList.remove(taskNum - 1);
         printLine();
         System.out.println(msg + deletedTask);
-        System.out.println("Now you have " + items.size() + " tasks to complete!");
+        System.out.println("Now you have " + taskList.size() + " tasks to complete!");
         printLine();
+    }
+
+    private static void saveTasks() {
+        try {
+            File file = new File(FILE_PATH);
+            file.getParentFile().mkdirs();
+            FileWriter fileWriter = new FileWriter(file);
+            for (Task task : taskList) {
+                fileWriter.write(task.toFileFormat() + System.lineSeparator());
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks: " + e.getMessage());
+        }
+    }
+
+    private static void loadTasks() {
+        try {
+            File file = new File(FILE_PATH);
+            if (!file.exists()) {
+                return;
+            }
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                Task task = parseTask(line);
+                taskList.add(task);
+            }
+            scanner.close();
+        } catch (IOException e) {
+            System.out.println("Error loading tasks:" + e.getMessage());
+        }
+    }
+
+    private static Task parseTask(String line) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task;
+        switch (type) {
+        case "T":
+            task = new ToDo(description);
+            break;
+        case "D":
+            task = new Deadline(description, parts[3]);
+            break;
+        case "E":
+            task = new Event(description, parts[3], parts[4]);
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown task type in file: " + type);
+        }
+        if (isDone) {
+            task.doTask();
+        }
+        return task;
     }
 
     public static void main(String[] args) {
