@@ -1,4 +1,10 @@
-package PACKAGE_NAME;
+public enum TaskType {
+    TODO, DEADLINE, EVENT, INVALID;
 
-public class TaskType {
+    public static TaskType fromString(String input) {
+        if (input.startsWith("todo")) return TODO;
+        if (input.startsWith("deadline")) return DEADLINE;
+        if (input.startsWith("event")) return EVENT;
+        return INVALID;
+    }
 }

@@ -1,24 +1,24 @@
 public class Task {
     private String name;
-    private boolean done;
+    private boolean isDone;
 
     public Task(String name) {
-        this.done = false;
+        this.isDone = false;
         this.name = name;
     }
 
     public void doTask() {
-        this.done = true;
+        this.isDone = true;
     }
 
     public void undoTask() {
-        this.done = false;
+        this.isDone = false;
     }
 
     @Override
     public String toString() {
         String status = "";
-        if (this.done) {
+        if (this.isDone) {
             status = "[X]";
         } else {
             status = "[ ]";
