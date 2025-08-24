@@ -1,11 +1,13 @@
-public class Task {
-    private String name;
-    private boolean isDone;
+public abstract class Task {
+    protected String description;
+    protected boolean isDone;
 
     public Task(String name) {
         this.isDone = false;
-        this.name = name;
+        this.description = name;
     }
+
+    public abstract String toFileFormat();
 
     public void doTask() {
         this.isDone = true;
@@ -23,6 +25,6 @@ public class Task {
         } else {
             status = "[ ]";
         }
-        return status + " " + this.name;
+        return status + " " + this.description;
     }
 }
