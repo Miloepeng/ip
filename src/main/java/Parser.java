@@ -7,40 +7,36 @@ public class Parser {
         this.storage = storage;
     }
 
-    public String parseCommand(String input) {
-        try {
-            CommandType command = CommandType.fromString(input);
-            switch (command) {
-            case LIST:
-                return listTasks();
+    public String parseCommand(String input) throws EgoException {
+        CommandType command = CommandType.fromString(input);
+        switch (command) {
+        case LIST:
+            return listTasks();
 
-            case MARK:
-                int markNum = Integer.parseInt(input.substring(5));
-                return markTask(markNum);
+        case MARK:
+            int markNum = Integer.parseInt(input.substring(5));
+            return markTask(markNum);
 
-            case UNMARK:
-                int unmarkNum = Integer.parseInt(input.substring(7));
-                return unmarkTask(unmarkNum);
+        case UNMARK:
+            int unmarkNum = Integer.parseInt(input.substring(7));
+            return unmarkTask(unmarkNum);
 
-            case TODO:
-            case DEADLINE:
-            case EVENT:
-                return addTask(input);
+        case TODO:
+        case DEADLINE:
+        case EVENT:
+            return addTask(input);
 
-            case DELETE:
-                int delNum = Integer.parseInt(input.substring(7));
-                return deleteTask(delNum);
+        case DELETE:
+            int delNum = Integer.parseInt(input.substring(7));
+            return deleteTask(delNum);
 
-            case BYE:
-                this.storage.saveTasks(this.tasks);
-                return "Farewell... see you soon";
+        case BYE:
+            this.storage.saveTasks(this.tasks);
+            return "Farewell... see you soon";
 
-            case INVALID:
-                return "Sorry! " + input + " is a invalid command. Try something else?";
+        case INVALID:
+            return "Sorry! " + input + " is a invalid command. Try something else?";
 
-            }
-        } catch (EgoException e) {
-            System.out.println(e.getMessage());
         }
         return "";
     }

@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Ego { ;
     private Storage storage;
     private TaskList tasks;
@@ -17,7 +19,23 @@ public class Ego { ;
      */
     public void run() {
         this.ui.greet();
-        this.ui.start();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        while (!input.equals("bye")) {
+            try {
+                String result = this.parser.parseCommand(input);
+                this.ui.printMessage(result);
+            } catch (EgoException e) {
+                this.ui.printMessage(e.getMessage());
+            }
+            input = scanner.nextLine();
+        }
+        try {
+            String result = this.parser.parseCommand(input);
+            this.ui.printMessage(result);
+        } catch (EgoException e) {
+            this.ui.printMessage("Error: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {

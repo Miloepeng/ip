@@ -19,19 +19,9 @@ public class Ui {
         printLine();
     }
 
-    public void start() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        while (!input.equals("bye")) {
-            String result = this.parser.parseCommand(input);
-            printLine();
-            System.out.println(result);
-            printLine();
-            input = scanner.nextLine();
-        }
-        String result = this.parser.parseCommand(input);
+    public void printMessage(String message) {
         printLine();
-        System.out.println(result);
+        System.out.println(message);
         printLine();
     }
 }
