@@ -1,3 +1,5 @@
+package ego.task;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -25,5 +27,19 @@ public class TaskList {
 
     public Task removeTask(int taskNum) {
         return this.taskList.remove(taskNum);
+    }
+
+    @Override
+    public String toString() {
+        String msg = "";
+        for (int i = 0; i < this.taskList.size(); i++) {
+            int count = i + 1;
+            if (count < this.taskList.size()) {
+                msg += count + "." + this.taskList.get(i) + "\n";
+            } else {
+                msg += count + "." + this.taskList.get(i);
+            }
+        }
+        return msg;
     }
 }

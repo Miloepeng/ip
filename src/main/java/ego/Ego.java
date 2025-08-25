@@ -1,3 +1,11 @@
+package ego;
+
+import ego.exception.EgoException;
+import ego.parser.Parser;
+import ego.storage.Storage;
+import ego.task.TaskList;
+import ego.ui.Ui;
+
 import java.util.Scanner;
 
 public class Ego { ;
@@ -10,11 +18,11 @@ public class Ego { ;
         this.storage = new Storage(filePath);
         this.tasks = this.storage.loadTasks();
         this.parser = new Parser(this.tasks, this.storage);
-        this.ui = new Ui(this.parser);
+        this.ui = new Ui();
     }
 
     /**
-     * Listens to user's input continuously to add or display Task list. User can also opt to mark Tasks
+     * Listens to user's input continuously to add or display ego.task.Task list. User can also opt to mark Tasks
      * as done or undone.
      */
     public void run() {

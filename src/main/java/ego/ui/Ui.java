@@ -1,10 +1,8 @@
-import java.util.Scanner;
+package ego.ui;
 
 public class Ui {
-    private Parser parser;
 
-    public Ui(Parser parser) {
-        this.parser = parser;
+    public Ui() {
     }
 
     private void printLine() {
@@ -13,7 +11,7 @@ public class Ui {
 
     public void greet() {
         printLine();
-        String greeting = "Hello there diamonds in the rough, I'm Ego *smiles*\n" +
+        String greeting = "Hello there diamonds in the rough, I'm ego.Ego *smiles*\n" +
                 "How may I be of assistance to your improvement today?";
         System.out.println(greeting);
         printLine();

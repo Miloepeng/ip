@@ -1,3 +1,15 @@
+package ego.parser;
+
+import ego.command.CommandType;
+import ego.exception.EgoException;
+import ego.storage.Storage;
+import ego.task.Deadline;
+import ego.task.Event;
+import ego.task.Task;
+import ego.task.TaskList;
+import ego.task.TaskType;
+import ego.task.ToDo;
+
 public class Parser {
     private TaskList tasks;
     private Storage storage;
@@ -43,14 +55,7 @@ public class Parser {
 
     private String listTasks() {
         String msg = "OK egoist, ready to rock your to-do list?\n";
-        for (int i = 0; i < this.tasks.getSize(); i++) {
-            int count = i + 1;
-            if (count < tasks.getSize()) {
-                msg += count + "." + this.tasks.getTask(i) + "\n";
-            } else {
-                msg += count + "." + this.tasks.getTask(i);
-            }
-        }
+        msg += this.tasks;
         return msg;
     }
 

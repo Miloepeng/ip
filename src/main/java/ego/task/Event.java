@@ -1,9 +1,13 @@
+package ego.task;
+
+import ego.exception.EgoException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents an Event task with a task description alongside the time period the user
+ * Represents an ego.task.Event task with a task description alongside the time period the user
  * should complete the task in. Users can also mark the task as done or undone.
  */
 public class Event extends Task {

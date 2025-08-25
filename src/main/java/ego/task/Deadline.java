@@ -1,9 +1,13 @@
+package ego.task;
+
+import ego.exception.EgoException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents a Deadline task with a task description and a due date in which
+ * Represents a ego.task.Deadline task with a task description and a due date in which
  * the task should be completed by. Users can mark the task as done or undone.
  */
 public class Deadline extends Task {

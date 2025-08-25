@@ -1,3 +1,11 @@
+package ego.storage;
+
+import ego.task.Deadline;
+import ego.task.Event;
+import ego.task.Task;
+import ego.task.TaskList;
+import ego.task.ToDo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

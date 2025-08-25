@@ -1,3 +1,5 @@
+package ego.task;
+
 /**
  * Represents a Todo task that has a task description. User can mark
  * it as either done or undone.
