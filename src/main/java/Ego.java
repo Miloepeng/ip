@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Ego {
@@ -128,7 +129,7 @@ public class Ego {
                         "Your command should be in the format deadline <description>" +
                         " /by <end date>!");
             }
-            String dueDate = splitted[1];
+            String dueDate = splitted[1].trim();
             newTask = new Deadline(splitted[0], dueDate);
             break;
 
@@ -165,8 +166,8 @@ public class Ego {
                         " Your command should be in the format: deadline <description> " +
                         "/from <start date> /to <end date>.");
             }
-            String startDate = splitEvent[0];
-            String endDate = splitEvent[1];
+            String startDate = splitEvent[0].trim();
+            String endDate = splitEvent[1].trim();
             newTask = new Event(event, startDate, endDate);
             break;
 
@@ -283,10 +284,10 @@ public class Ego {
             task = new ToDo(description);
             break;
         case "D":
-            task = new Deadline(description, parts[3]);
+            task = new Deadline(description, LocalDate.parse(parts[3]));
             break;
         case "E":
-            task = new Event(description, parts[3], parts[4]);
+            task = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
             break;
         default:
             throw new IllegalArgumentException("Unknown task type in file: " + type);
