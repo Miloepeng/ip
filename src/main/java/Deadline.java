@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Represents a Deadline task with a task description and a due date in which
@@ -8,9 +9,18 @@ import java.time.format.DateTimeFormatter;
 public class Deadline extends Task {
     private LocalDate endDate;
 
-    public Deadline(String name, String endDate) {
+    public Deadline(String name, String endDate) throws EgoException {
         super(name);
-        this.endDate = LocalDate.parse(endDate);
+        try {
+            this.endDate = LocalDate.parse(endDate);
+        } catch (DateTimeParseException e) {
+            throw new EgoException("Hey there! Please enter the date in yyyy-MM-dd format!, eg. 2025-08-25");
+        }
+    }
+
+    public Deadline(String description, LocalDate endDate) {
+        super(description);
+        this.endDate = endDate;
     }
 
     @Override

@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Ego {
@@ -283,10 +284,10 @@ public class Ego {
             task = new ToDo(description);
             break;
         case "D":
-            task = new Deadline(description, parts[3]);
+            task = new Deadline(description, LocalDate.parse(parts[3]));
             break;
         case "E":
-            task = new Event(description, parts[3], parts[4]);
+            task = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
             break;
         default:
             throw new IllegalArgumentException("Unknown task type in file: " + type);
