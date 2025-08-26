@@ -1,8 +1,16 @@
 package ego.command;
 
+/**
+ * Represents the valid commands available to the user.
+ */
 public enum CommandType {
     LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID;
 
+    /**
+     * Returns the correct CommandType based on the user's input.
+     * @param input The whole command given by the user to the chatbot.
+     * @return A CommandType representing what category of command the user has issued.
+     */
     public static CommandType fromString(String input) {
         if (input == null || input.isEmpty()) {
             return INVALID;

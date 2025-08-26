@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents a class that deals with loading tasks from the save file and saving tasks into the save file.
+ */
 public class Storage {
     private String filePath;
 
@@ -20,6 +23,10 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the current tasks in the user's task list into the save file.
+     * @param taskList The current list of tasks the user is keeping track of.
+     */
     public void saveTasks(TaskList taskList) {
         try {
             File file = new File(this.filePath);
@@ -34,6 +41,10 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads the tasks from the save file into the user's current session.
+     * @return A TaskList which contains the tasks saved by the user in his previous session.
+     */
     public TaskList loadTasks() {
         try {
             TaskList result = new TaskList(new ArrayList<>());
@@ -59,6 +70,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Parses the task in the save file into the respective Task objects.
+     * @param line The task in the save file.
+     * @return A Task object representing the task stored in the save file.
+     */
     private static Task parseTask(String line) {
         String[] parts = line.split(" \\| ");
         String type = parts[0];

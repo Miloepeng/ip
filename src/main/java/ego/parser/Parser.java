@@ -10,6 +10,9 @@ import ego.task.TaskList;
 import ego.task.TaskType;
 import ego.task.ToDo;
 
+/**
+ * Deals with making sense of the user command and executing it accordingly.
+ */
 public class Parser {
     private TaskList tasks;
     private Storage storage;
@@ -19,6 +22,14 @@ public class Parser {
         this.storage = storage;
     }
 
+    /**
+     * Returns the corresponding result that should be displayed to the user by
+     * parsing the users' command and calling the correct method.
+     * @param input Input command given by the user to the chatbot.
+     * @return String result of what is to be displayed to user.
+     * @throws EgoException If the command given by user is invalid due to issues such as
+     * formatting.
+     */
     public String parseCommand(String input) throws EgoException {
         CommandType command = CommandType.fromString(input);
         switch (command) {
@@ -53,12 +64,24 @@ public class Parser {
         return "";
     }
 
+    /**
+     * Returns the current tasks the user is currently tracking.
+     * @return A String result of the user's task list, numbered by order in which they were added.
+     */
     public String listTasks() {
         String msg = "OK egoist, ready to rock your to-do list?\n";
         msg += this.tasks;
         return msg;
     }
 
+    /**
+     * Returns the current tasks the user is tracking after marking the selected task
+     * as being completed.
+     * @param taskNum The index of the task the user wish to mark as completed.
+     * @return A String displayed to the user informing them that the task has been successfully
+     * marked as completed.
+     * @throws EgoException If the index of the task the user inputs is not within the valid range.
+     */
     public String markTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
@@ -69,6 +92,14 @@ public class Parser {
         return msg;
     }
 
+    /**
+     * Returns the current tasks the user is tracking after marking the selected task as
+     * incomplete.
+     * @param taskNum The index of the task the user wish to mark as completed.
+     * @return  String displayed to the user informing them that the task has been successfully
+     * marked as incomplete.
+     * @throws EgoException If the index of the task the user inputs is not within the valid range.
+     */
     public String unmarkTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
@@ -79,6 +110,14 @@ public class Parser {
         return msg;
     }
 
+    /**
+     * Returns the task to be added after successfully adding it into the user's task list.
+     * @param input The full command by the user which includes information about the tasks
+     * such as description and deadlines.
+     * @return String to be displayed to the user confirming the addition of the task the user
+     * wish to add in their task list.
+     * @throws EgoException If the task to be added has a invalid format.
+     */
     public String addTask(String input) throws EgoException {
         Task newTask = null;
         TaskType type = TaskType.fromString(input);
@@ -163,6 +202,13 @@ public class Parser {
         return msg;
     }
 
+    /**
+     * Returns the String displaying the result of the selected task being deleted from the user's
+     * task list.
+     * @param taskNum The index of the task deleted from the task list.
+     * @return A String displaying the task that has been removed.
+     * @throws EgoException If the index of the task to be deleted is invalid.
+     */
     public String deleteTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
