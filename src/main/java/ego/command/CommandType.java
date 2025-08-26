@@ -1,7 +1,7 @@
 package ego.command;
 
 public enum CommandType {
-    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID;
+    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID, FIND;
 
     public static CommandType fromString(String input) {
         if (input == null || input.isEmpty()) {
@@ -16,6 +16,7 @@ public enum CommandType {
         if (input.startsWith("event")) return EVENT;
         if (input.startsWith("delete")) return DELETE;
         if (input.equals("bye")) return BYE;
+        if (input.startsWith("find")) return FIND;
 
         return INVALID;
     }
