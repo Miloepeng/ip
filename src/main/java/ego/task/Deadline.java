@@ -13,8 +13,15 @@ import java.time.format.DateTimeParseException;
 public class Deadline extends Task {
     private LocalDate endDate;
 
-    public Deadline(String name, String endDate) throws EgoException {
-        super(name);
+    /**
+     * Constructor method for Deadline class.
+     * @param desc The description of the task.
+     * @param endDate The date which the task must be completed by as given by the user.
+     * @throws EgoException If the format in which the task is being inputted by the user
+     * in his command is invalid.
+     */
+    public Deadline(String desc, String endDate) throws EgoException {
+        super(desc);
         try {
             this.endDate = LocalDate.parse(endDate);
         } catch (DateTimeParseException e) {
@@ -22,17 +29,31 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Constructor method for Deadline class.
+     * @param description The description of the task.
+     * @param endDate The date which the task must be completed by, as read from the storage file.
+     */
     public Deadline(String description, LocalDate endDate) {
         super(description);
         this.endDate = endDate;
     }
 
+    /**
+     * Returns a String representation of the Deadline object in the correct format to be stored in
+     * storage.
+     * @return A correct String representation of the Deadline object to be stored in storage.
+     */
     @Override
     public String toFileFormat() {
         return "D | " + (isDone ? "1" : "0") + " | " + description +
                 " | " + endDate;
     }
 
+    /**
+     * Returns a String representation of the Deadline object as displayed to user.
+     * @return A correct String representation of the Deadline object as displayed to user.
+     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + "(by: " +

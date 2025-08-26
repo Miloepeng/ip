@@ -14,8 +14,16 @@ public class Event extends Task {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Event(String name, String startDate, String endDate) throws EgoException {
-        super(name);
+    /**
+     * Constructor method for Event class.
+     * @param desc The description of the task.
+     * @param startDate The date in which the task should begin.
+     * @param endDate The date in which the task should be completed by.
+     * @throws EgoException If the format of the Event task as inputted by the user in
+     * their command is invalid.
+     */
+    public Event(String desc, String startDate, String endDate) throws EgoException {
+        super(desc);
         try {
             this.startDate = LocalDate.parse(startDate);
             this.endDate = LocalDate.parse(endDate);
@@ -24,18 +32,33 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Constructor method for Event class.
+     * @param description The description of the task.
+     * @param startDate The date in which the task should begin.
+     * @param endDate The date in which the the task should be completed by.
+     */
     public Event(String description, LocalDate startDate, LocalDate endDate) {
         super(description);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
+    /**
+     * Returns a String representation of the Event object in the correct format to be stored in
+     * storage.
+     * @return A correct String representation of the Event object to be stored in storage.
+     */
     @Override
     public String toFileFormat() {
         return "E | "+ (isDone ? "1" : "0") + " | " + description +
                 " | " + startDate + " | " + endDate;
     }
 
+    /**
+     * Returns a String representation of the Event object as displayed to user.
+     * @return A correct String representation of the Deadline object as displayed to user.
+     */
     @Override
     public String toString() {
         String duration = "(from: " +
