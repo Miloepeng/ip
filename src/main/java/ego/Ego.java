@@ -8,6 +8,9 @@ import ego.ui.Ui;
 
 import java.util.Scanner;
 
+/**
+ * Represents the chatbot Ego.
+ */
 public class Ego { ;
     private Storage storage;
     private TaskList tasks;
@@ -23,7 +26,8 @@ public class Ego { ;
 
     /**
      * Listens to user's input continuously to add or display ego.task.Task list. User can also opt to mark Tasks
-     * as done or undone.
+     * as done or undone, alongside other functionalities such as deleting tasks from their task list or finding
+     * specific tasks using keywords.
      */
     public void run() {
         this.ui.greet();
