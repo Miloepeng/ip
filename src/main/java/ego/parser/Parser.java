@@ -34,8 +34,11 @@ public class Parser {
             return unmarkTask(unmarkNum);
 
         case TODO:
+            //Fallthrough
         case DEADLINE:
+            //Fallthrough
         case EVENT:
+            //Fallthrough
             return addTask(input);
 
         case DELETE:

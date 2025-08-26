@@ -8,7 +8,7 @@ import ego.ui.Ui;
 
 import java.util.Scanner;
 
-public class Ego { ;
+public class Ego {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -44,6 +44,7 @@ public class Ego { ;
         } catch (EgoException e) {
             this.ui.printMessage("Error: " + e.getMessage());
         }
+        scanner.close();
     }
 
     public static void main(String[] args) {

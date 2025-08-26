@@ -3,41 +3,41 @@ package ego.task;
 import java.util.ArrayList;
 
 public class TaskList {
-    private ArrayList<Task> taskList;
+    private ArrayList<Task> tasks;
 
     public TaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
+        this.tasks = taskList;
     }
 
     public ArrayList<Task> getTasks() {
-        return this.taskList;
+        return this.tasks;
     }
 
     public void addTask(Task task) {
-        this.taskList.add(task);
+        this.tasks.add(task);
     }
 
     public int getSize() {
-        return this.taskList.size();
+        return this.tasks.size();
     }
 
     public Task getTask(int i) {
-        return this.taskList.get(i);
+        return this.tasks.get(i);
     }
 
     public Task removeTask(int taskNum) {
-        return this.taskList.remove(taskNum);
+        return this.tasks.remove(taskNum);
     }
 
     @Override
     public String toString() {
         String msg = "";
-        for (int i = 0; i < this.taskList.size(); i++) {
+        for (int i = 0; i < this.tasks.size(); i++) {
             int count = i + 1;
-            if (count < this.taskList.size()) {
-                msg += count + "." + this.taskList.get(i) + "\n";
+            if (count < this.tasks.size()) {
+                msg += count + "." + this.tasks.get(i) + "\n";
             } else {
-                msg += count + "." + this.taskList.get(i);
+                msg += count + "." + this.tasks.get(i);
             }
         }
         return msg;
