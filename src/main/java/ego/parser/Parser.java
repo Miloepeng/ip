@@ -53,13 +53,13 @@ public class Parser {
         return "";
     }
 
-    private String listTasks() {
+    public String listTasks() {
         String msg = "OK egoist, ready to rock your to-do list?\n";
         msg += this.tasks;
         return msg;
     }
 
-    private String markTask(int taskNum) throws EgoException {
+    public String markTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
         }
@@ -69,7 +69,7 @@ public class Parser {
         return msg;
     }
 
-    private String unmarkTask(int taskNum) throws EgoException {
+    public String unmarkTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
         }
@@ -79,7 +79,7 @@ public class Parser {
         return msg;
     }
 
-    private String addTask(String input) throws EgoException {
+    public String addTask(String input) throws EgoException {
         Task newTask = null;
         TaskType type = TaskType.fromString(input);
 
@@ -163,7 +163,7 @@ public class Parser {
         return msg;
     }
 
-    private String deleteTask(int taskNum) throws EgoException {
+    public String deleteTask(int taskNum) throws EgoException {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
         }
