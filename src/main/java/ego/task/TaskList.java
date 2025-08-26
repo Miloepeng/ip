@@ -6,10 +6,10 @@ import java.util.ArrayList;
  * Represents the user's task list containing either Todos, Deadlines, or Events.
  */
 public class TaskList {
-    private ArrayList<Task> taskList;
+    private ArrayList<Task> tasks;
 
     public TaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
+        this.tasks = taskList;
     }
 
     /**
@@ -17,7 +17,7 @@ public class TaskList {
      * @return A ArrayList<Task> of tasks.
      */
     public ArrayList<Task> getTasks() {
-        return this.taskList;
+        return this.tasks;
     }
 
     /**
@@ -25,7 +25,7 @@ public class TaskList {
      * @param task The task to be added to the task list.
      */
     public void addTask(Task task) {
-        this.taskList.add(task);
+        this.tasks.add(task);
     }
 
     /**
@@ -33,7 +33,7 @@ public class TaskList {
      * @return The number of tasks in the task list.
      */
     public int getSize() {
-        return this.taskList.size();
+        return this.tasks.size();
     }
 
     /**
@@ -42,7 +42,7 @@ public class TaskList {
      * @return The task at the specified index.
      */
     public Task getTask(int index) {
-        return this.taskList.get(index);
+        return this.tasks.get(index);
     }
 
     /**
@@ -51,7 +51,7 @@ public class TaskList {
      * @return The Task object that should be removed from the task list.
      */
     public Task removeTask(int taskNum) {
-        return this.taskList.remove(taskNum);
+        return this.tasks.remove(taskNum);
     }
 
     /**
@@ -61,12 +61,12 @@ public class TaskList {
     @Override
     public String toString() {
         String msg = "";
-        for (int i = 0; i < this.taskList.size(); i++) {
+        for (int i = 0; i < this.tasks.size(); i++) {
             int count = i + 1;
-            if (count < this.taskList.size()) {
-                msg += count + "." + this.taskList.get(i) + "\n";
+            if (count < this.tasks.size()) {
+                msg += count + "." + this.tasks.get(i) + "\n";
             } else {
-                msg += count + "." + this.taskList.get(i);
+                msg += count + "." + this.tasks.get(i);
             }
         }
         return msg;

@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Represents the chatbot Ego.
  */
-public class Ego { ;
+public class Ego {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;

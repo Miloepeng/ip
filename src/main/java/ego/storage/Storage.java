@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class Storage {
     private String filePath;
 
-    public Storage (String filePath) {
+    public Storage(String filePath) {
         this.filePath = filePath;
     }
 
@@ -65,7 +65,7 @@ public class Storage {
             scanner.close();
             return result;
         } catch (IOException e) {
-            System.out.println("Error loading tasks:" + e.getMessage());
+            System.out.println("Error loading tasks: " + e.getMessage());
             return new TaskList(new ArrayList<>());
         }
     }
