@@ -9,6 +9,7 @@ import ego.task.Task;
 import ego.task.TaskList;
 import ego.task.TaskType;
 import ego.task.ToDo;
+import java.util.ArrayList;
 
 /**
  * Deals with making sense of the user command and executing it accordingly.
@@ -62,6 +63,10 @@ public class Parser {
 
         case INVALID:
             return "Sorry! " + input + " is a invalid command. Try something else?";
+
+        case FIND:
+            String key = input.substring(5).trim();
+            return findTask(key);
 
         }
         return "";
@@ -221,5 +226,16 @@ public class Parser {
         msg += deletedTask + "\n";
         msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
         return msg;
+    }
+
+    public String findTask(String key) throws EgoException {
+        TaskList result = new TaskList(new ArrayList<>());
+        for (Task task : this.tasks.getTasks()) {
+            if (task.toString().contains(key)) {
+                result.addTask(task);
+            }
+        }
+        String msg = "Here are the relevant tasks you asked for:\n";
+        return msg + result.toString();
     }
 }

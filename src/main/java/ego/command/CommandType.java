@@ -4,7 +4,7 @@ package ego.command;
  * Represents the valid commands available to the user.
  */
 public enum CommandType {
-    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID;
+    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE, INVALID, FIND;
 
     /**
      * Returns the correct CommandType based on the user's input.
@@ -24,6 +24,7 @@ public enum CommandType {
         if (input.startsWith("event")) return EVENT;
         if (input.startsWith("delete")) return DELETE;
         if (input.equals("bye")) return BYE;
+        if (input.startsWith("find")) return FIND;
 
         return INVALID;
     }

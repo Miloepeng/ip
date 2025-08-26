@@ -60,6 +60,9 @@ public class TaskList {
      */
     @Override
     public String toString() {
+        if (this.taskList.size() == 0) {
+            return "Uhoh! Looks like your tasklist is empty...";
+        }
         String msg = "";
         for (int i = 0; i < this.tasks.size(); i++) {
             int count = i + 1;
