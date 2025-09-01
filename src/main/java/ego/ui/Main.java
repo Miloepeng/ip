@@ -1,5 +1,6 @@
 package ego.ui;
 
+import ego.Ego;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,7 +19,8 @@ public class Main extends Application {
     private Button sendButton;
     private Scene scene;
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/Ego.jpg"));
+    private Image egoImage = new Image(this.getClass().getResourceAsStream("/images/Ego.jpg"));
+    private Ego ego = new Ego("data/ego.txt");
 
     @Override
     public void start(Stage stage) {
@@ -89,7 +91,12 @@ public class Main extends Application {
      * the dialog container. Clears the user input after processing.
      */
     private void handleUserInput() {
-        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        String userText = userInput.getText();
+        String egoText = ego.getResponse(userInput.getText());
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getEgoDialog(egoText, egoImage)
+        );
         userInput.clear();
     }
 }

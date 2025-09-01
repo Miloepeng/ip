@@ -56,4 +56,11 @@ public class Ego {
         //new Ego("data/ego.txt").run();
         Application.launch(Main.class);
     }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Ego heard: " + input;
+    }
 }
