@@ -5,7 +5,9 @@ import ego.parser.Parser;
 import ego.storage.Storage;
 import ego.task.TaskList;
 import ego.ui.Ui;
+import ego.ui.Main;
 
+import javafx.application.Application;
 import java.util.Scanner;
 
 /**
@@ -51,6 +53,7 @@ public class Ego {
     }
 
     public static void main(String[] args) {
-        new Ego("data/ego.txt").run();
+        //new Ego("data/ego.txt").run();
+        Application.launch(Main.class);
     }
 }
