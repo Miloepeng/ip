@@ -20,10 +20,17 @@ public class Ui {
      */
     public void greet() {
         printLine();
-        String greeting = "Hello there diamonds in the rough, I'm ego.Ego *smiles*\n" +
-                "How may I be of assistance to your improvement today?";
+        String greeting = getGreeting();
         System.out.println(greeting);
         printLine();
+    }
+
+    /**
+     * Returns the greeting text for display by the GUI.
+     */
+    public String getGreeting() {
+        return "Hello there diamonds in the rough, I'm ego.Ego *smiles*\n"
+                + "How may I be of assistance to your improvement today?";
     }
 
     /**

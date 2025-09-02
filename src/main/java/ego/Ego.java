@@ -32,26 +32,6 @@ public class Ego {
      * as done or undone, alongside other functionalities such as deleting tasks from their task list or finding
      * specific tasks using keywords.
      */
-    public void run() {
-        this.ui.greet();
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        while (!input.equals("bye")) {
-            try {
-                String result = this.parser.parseCommand(input);
-                this.ui.printMessage(result);
-            } catch (EgoException e) {
-                this.ui.printMessage(e.getMessage());
-            }
-            input = scanner.nextLine();
-        }
-        try {
-            String result = this.parser.parseCommand(input);
-            this.ui.printMessage(result);
-        } catch (EgoException e) {
-            this.ui.printMessage("Error: " + e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
         //new Ego("data/ego.txt").run();
@@ -96,8 +76,7 @@ public class Ego {
      * Returns the greeting message to display on GUI startup.
      */
     public String getGreeting() {
-        return "Hello there diamonds in the rough, I'm ego.Ego *smiles*\n"
-                + "How may I be of assistance to your improvement today?";
+        return this.ui.getGreeting();
     }
 
     /**
