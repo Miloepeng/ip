@@ -18,6 +18,7 @@ public class Ego {
     private TaskList tasks;
     private Ui ui;
     private Parser parser;
+    private String commandType;
 
     public Ego(String filePath) {
         this.storage = new Storage(filePath);
@@ -61,6 +62,48 @@ public class Ego {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Ego heard: " + input;
+        try {
+            String result = this.parser.parseCommand(input);
+            // Map our command enum to dialog style keys
+            switch (ego.command.CommandType.fromString(input)) {
+            case TODO:
+            case DEADLINE:
+            case EVENT:
+                this.commandType = "AddCommand";
+                break;
+            case MARK:
+            case UNMARK:
+                this.commandType = "ChangeMarkCommand";
+                break;
+            case DELETE:
+                this.commandType = "DeleteCommand";
+                break;
+            default:
+                this.commandType = null;
+            }
+            return result;
+        } catch (EgoException e) {
+            this.commandType = null;
+            return e.getMessage();
+        }
+    }
+
+    public String getCommandType() {
+        return this.commandType;
+    }
+
+    /**
+     * Returns the greeting message to display on GUI startup.
+     */
+    public String getGreeting() {
+        return "Hello there diamonds in the rough, I'm ego.Ego *smiles*\n"
+                + "How may I be of assistance to your improvement today?";
+    }
+
+    /**
+     * Persists tasks to storage. Call on GUI close.
+     */
+    public void save() {
+        this.storage.saveTasks(this.tasks);
     }
 }
