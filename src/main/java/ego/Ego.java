@@ -22,9 +22,13 @@ public class Ego {
 
     public Ego(String filePath) {
         this.storage = new Storage(filePath);
+        assert this.storage != null : "Storage cannot be null";
         this.tasks = this.storage.loadTasks();
+        assert this.tasks != null : "Loaded task lists cannot be null";
         this.parser = new Parser(this.tasks, this.storage);
+        assert this.parser != null : "Parser cannot be null";
         this.ui = new Ui();
+        assert this.ui != null : "Ui cannot be null";
     }
 
     /**

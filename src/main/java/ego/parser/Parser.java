@@ -205,6 +205,7 @@ public class Parser {
 
         }
 
+        assert newTask != null : "Command execution must always add a task";
         this.tasks.addTask(newTask);
         String msg = "Added: " + newTask + "\n";
         msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
@@ -224,6 +225,7 @@ public class Parser {
         }
         String msg = "Roger, I'll delete this task from your list!\n  ";
         Task deletedTask = this.tasks.removeTask(taskNum - 1);
+        assert deletedTask != null : "Deleted task cannot be null";
         msg += deletedTask + "\n";
         msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
         return msg;
@@ -236,6 +238,7 @@ public class Parser {
                 result.addTask(task);
             }
         }
+        assert result != null : "Command execution must always return a result";
         String msg = "Here are the relevant tasks you asked for:\n";
         return msg + result.toString();
     }
