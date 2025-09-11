@@ -18,6 +18,8 @@ import java.util.Scanner;
  */
 public class Storage {
     private String filePath;
+    private static final String DONE_FLAG = "1";
+    private static final String DELIMITER = " \\| ";
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -76,9 +78,9 @@ public class Storage {
      * @return A Task object representing the task stored in the save file.
      */
     private static Task parseTask(String line) {
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(DELIMITER);
         String type = parts[0];
-        boolean isDone = parts[1].equals("1");
+        boolean isDone = parts[1].equals(DONE_FLAG);
         String description = parts[2];
 
         Task task;
