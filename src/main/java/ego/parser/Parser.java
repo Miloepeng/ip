@@ -92,12 +92,12 @@ public class Parser {
      * @throws EgoException If the index of the task the user inputs is not within the valid range.
      */
     public String markTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Well done egoist, I've marked this task as completed:\n  ";
         this.tasks.getTask(taskNum - 1).doTask();
         msg += this.tasks.getTask(taskNum - 1);
+
         return msg;
     }
 
@@ -110,12 +110,12 @@ public class Parser {
      * @throws EgoException If the index of the task the user inputs is not within the valid range.
      */
     public String unmarkTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Alright... I'll mark this task as not done yet...\n  ";
         this.tasks.getTask(taskNum - 1).undoTask();
         msg += this.tasks.getTask(taskNum - 1);
+
         return msg;
     }
 
@@ -219,24 +219,51 @@ public class Parser {
      * @throws EgoException If the index of the task to be deleted is invalid.
      */
     public String deleteTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Roger, I'll delete this task from your list!\n  ";
         Task deletedTask = this.tasks.removeTask(taskNum - 1);
         msg += deletedTask + "\n";
         msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
+
         return msg;
     }
 
-    public String findTask(String key) throws EgoException {
+    /**
+     * Finds tasks that contains the given keyword in their String representation.
+     * @param keyword The search keyword.
+     * @return A String listing matching tasks.
+     * @throws EgoException
+     */
+    public String findTask(String keyword) throws EgoException {
+        TaskList result = searchTasks(keyword);
+        return "Here are the relevant tasks you asked for:\n" + result;
+    }
+
+    /**
+     * Filters tasks by keyword.
+     * @param keyword The search keyword.
+     * @return A TaskList of tasks that match the keyword.
+     */
+    private TaskList searchTasks(String keyword) {
         TaskList result = new TaskList(new ArrayList<>());
         for (Task task : this.tasks.getTasks()) {
-            if (task.toString().contains(key)) {
+            if (task.toString().contains(keyword)) {
                 result.addTask(task);
             }
         }
-        String msg = "Here are the relevant tasks you asked for:\n";
-        return msg + result.toString();
+        return result;
     }
+
+    /**
+     * Validates that the given task number is within bounds.
+     * @param taskNum Index of the task.
+     * @throws EgoException If the index is invalid.
+     */
+    private void validateTaskIndex(int taskNum) throws EgoException {
+        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
+            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
+        }
+    }
+
 }
