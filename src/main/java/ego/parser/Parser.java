@@ -69,6 +69,9 @@ public class Parser {
             String key = input.substring(5).trim();
             return findTask(key);
 
+        case HELP:
+            return getHelpMessage();
+
         default:
             return "";
         }
@@ -290,6 +293,37 @@ public class Parser {
         if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
             throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
         }
+    }
+
+    /**
+     * Returns a help message to list all commands of Ego.
+     * @return A string containing a list of commands for Ego.
+     */
+    public String getHelpMessage() {
+        return """
+            Hello there diamonds in the rough, feeling lost?
+            Here are the list of commands you can use:
+            - help
+                Show list of commands
+            - list
+                Show current task you have
+            - mark <taskNum>
+                Mark a task as completed
+            - unmark <taskNum>
+                Mark a task as not done
+            - todo <desc>
+                Add a todo task with description
+            - deadline <desc> /by <deadline>
+                Add a task with a deadline
+            - event <desc> /from <start> /to <end>
+                Add an event with start and end date
+            - delete <taskNum>
+                Delete a task
+            - find <keyword>
+                Find tasks by keyword
+            - bye
+                Exit and save tasks
+            """;
     }
 
 }
