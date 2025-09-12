@@ -60,10 +60,10 @@ public class Parser {
 
         case BYE:
             this.storage.saveTasks(this.tasks);
-            return "Farewell... see you soon";
+            return "Farewell egoist! see you soon";
 
         case INVALID:
-            return "Sorry! " + input + " is a invalid command. Try something else?";
+            return "Hey there egoist! " + input + " is a invalid command. Try something else alright?";
 
         case FIND:
             String key = input.substring(5).trim();
@@ -116,7 +116,8 @@ public class Parser {
     public String unmarkTask(int taskNum) throws EgoException {
         validateTaskIndex(taskNum);
 
-        String msg = "Alright... I'll mark this task as not done yet...\n  ";
+        String msg = "Alright... I'll mark this task as not done yet since" +
+                " you have yet to grow your ego...\n  ";
         this.tasks.getTask(taskNum - 1).undoTask();
         msg += this.tasks.getTask(taskNum - 1);
 
@@ -155,7 +156,7 @@ public class Parser {
         assert newTask != null : "Command execution must always add a task";
         this.tasks.addTask(newTask);
         String msg = "Added: " + newTask + "\n";
-        msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
+        msg += "Now you have " + this.tasks.getSize() + " tasks to complete! Keep it up egoist!";
         return msg;
     }
 
@@ -247,7 +248,7 @@ public class Parser {
     public String deleteTask(int taskNum) throws EgoException {
         validateTaskIndex(taskNum);
 
-        String msg = "Roger, I'll delete this task from your list!\n  ";
+        String msg = "Roger, I'll delete this task from your list egoist!\n  ";
         Task deletedTask = this.tasks.removeTask(taskNum - 1);
         assert deletedTask != null : "Deleted task cannot be null";
         msg += deletedTask + "\n";
