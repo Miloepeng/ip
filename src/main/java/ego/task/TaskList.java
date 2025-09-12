@@ -62,7 +62,7 @@ public class TaskList {
      */
     @Override
     public String toString() {
-        if (this.tasks.size() == 0) {
+        if (this.tasks.isEmpty()) {
             return "Uhoh! Looks like your tasklist is empty...";
         }
         String msg = "";

@@ -69,8 +69,9 @@ public class Parser {
             String key = input.substring(5).trim();
             return findTask(key);
 
+        default:
+            return "";
         }
-        return "";
     }
 
     /**
@@ -92,12 +93,12 @@ public class Parser {
      * @throws EgoException If the index of the task the user inputs is not within the valid range.
      */
     public String markTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Well done egoist, I've marked this task as completed:\n  ";
         this.tasks.getTask(taskNum - 1).doTask();
         msg += this.tasks.getTask(taskNum - 1);
+
         return msg;
     }
 
@@ -110,12 +111,12 @@ public class Parser {
      * @throws EgoException If the index of the task the user inputs is not within the valid range.
      */
     public String unmarkTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Alright... I'll mark this task as not done yet...\n  ";
         this.tasks.getTask(taskNum - 1).undoTask();
         msg += this.tasks.getTask(taskNum - 1);
+
         return msg;
     }
 
@@ -125,84 +126,27 @@ public class Parser {
      * such as description and deadlines.
      * @return String to be displayed to the user confirming the addition of the task the user
      * wish to add in their task list.
-     * @throws EgoException If the task to be added has a invalid format.
+     * @throws EgoException If the task to be added has an invalid format.
      */
     public String addTask(String input) throws EgoException {
-        Task newTask = null;
+        Task newTask;
         TaskType type = TaskType.fromString(input);
 
         switch (type) {
         case TODO:
-            String todo = input.substring(4).trim();
-            if (todo.isEmpty()) {
-                throw new EgoException("Hey... better take a closer look! " +
-                        "Your task description can't be empty egoist.");
-            }
-            newTask = new ToDo(todo);
+            newTask = createToDoTask(input);
             break;
 
         case DEADLINE:
-            String deadline = input.substring(8).trim();
-            if (deadline.isEmpty()) {
-                throw new EgoException("Hey... better take a closer look! " +
-                        "Your task description can't be empty egoist!");
-            }
-            if (!deadline.contains("/by")) {
-                throw new EgoException("Hey... Your command should be in the format: deadline <description>" +
-                        " /by <end date>!");
-            }
-            String[] splitted = deadline.split("/by ");
-            if (splitted.length < 1 || splitted[0].isEmpty()) {
-                throw new EgoException("Hey... better take a closer look! " +
-                        "Your task description can't be empty egoist!");
-            }
-            if (splitted.length < 2 || splitted[1].trim().isEmpty()) {
-                throw new EgoException("Hey... remind me what's the deadline again? " +
-                        "Your command should be in the format deadline <description>" +
-                        " /by <end date>!");
-            }
-            String dueDate = splitted[1].trim();
-            newTask = new Deadline(splitted[0], dueDate);
+            newTask = createDeadlineTask(input);
             break;
 
         case EVENT:
-            String event = input.substring(5).trim();
-            if (event.isEmpty()) {
-                throw new EgoException("Hey... better take a closer look! " +
-                        "Your task description can't be empty egoist!");
-            }
-            if (!event.contains("/from")) {
-                throw new EgoException("Hey... where is your /from! " +
-                        "Your command should be in the format: deadline <description>" +
-                        " /from <start date> /to <end date>!");
-            }
-            if (!event.contains("/to")) {
-                throw new EgoException("Hey... where is your /to! " +
-                        "Your command should be in the format: deadline <description>" +
-                        " /from <start date> /to <end date>!");
-            }
-            String[] splitEvent = event.split("/from ");
-            event = splitEvent[0];
-            if (splitEvent[0].isEmpty()) {
-                throw new EgoException("Hey... better take a closer look! " +
-                        "Your task description can't be empty egoist!");
-            }
-            splitEvent = splitEvent[1].split("/to ");
-            if (splitEvent[0].isEmpty()) {
-                throw new EgoException("Hey... start date must be provided!" +
-                        " Your command should be in the format: deadline <description> " +
-                        "/from <start date> /to <end date>.");
-            }
-            if (splitEvent.length < 2 || splitEvent[1].isEmpty()) {
-                throw new EgoException("Hey... end date must be provided!" +
-                        " Your command should be in the format: deadline <description> " +
-                        "/from <start date> /to <end date>.");
-            }
-            String startDate = splitEvent[0].trim();
-            String endDate = splitEvent[1].trim();
-            newTask = new Event(event, startDate, endDate);
+            newTask = createEventTask(input);
             break;
 
+        default:
+            throw new EgoException("Unknown task type: " + type);
         }
 
         assert newTask != null : "Command execution must always add a task";
@@ -213,6 +157,84 @@ public class Parser {
     }
 
     /**
+     * Creates a new ToDo task using the user input.
+     * @param input The full command from the user with the user's task description.
+     * @return A ToDo task.
+     * @throws EgoException If the description is empty.
+     */
+    private Task createToDoTask(String input) throws EgoException {
+        String todo = input.substring(4).trim();
+        if (todo.isEmpty()) {
+            throw new EgoException("Hey... better take a closer look! " +
+                    "Your task description can't be empty egoist.");
+        }
+        return new ToDo(todo);
+    }
+
+    /**
+     * Creates a new Deadline task using the user input.
+     * @param input The full command from the user with the user's task description
+     *              and deadline.
+     * @return A Deadline task.
+     * @throws EgoException If the format is invalid.
+     */
+    private Task createDeadlineTask(String input) throws EgoException {
+        String deadline = input.substring(8).trim();
+        if (deadline.isEmpty()) {
+            throw new EgoException("Hey... better take a closer look! "
+                    + "Your task description can't be empty egoist!");
+        }
+        if (!deadline.contains("/by")) {
+            throw new EgoException("Hey... Your command should be in the format: "
+                    + "deadline <description> /by <end date>!");
+        }
+
+        String[] splitString = deadline.split("/by ");
+        if (splitString.length < 2 || splitString[0].isEmpty() || splitString[1].trim().isEmpty()) {
+            throw new EgoException("Hey... remind me what's the deadline again? "
+                    + "Your command should be in the format: deadline <description> /by <end date>!");
+        }
+        String description = splitString[0].trim();
+        String dueDate = splitString[1].trim();
+        return new Deadline(description, dueDate);
+    }
+
+    /**
+     * Creates a new Event task using the user input.
+     * @param input The full command from the user with the user's task
+     *              description, start date and end date.
+     * @return An Event task.
+     * @throws EgoException If the format is invalid.
+     */
+    private Task createEventTask(String input) throws EgoException {
+        String event = input.substring(5).trim();
+        if (event.isEmpty()) {
+            throw new EgoException("Hey... better take a closer look! "
+                    + "Your task description can't be empty egoist!");
+        }
+        if (!event.contains("/from") || !event.contains("/to")) {
+            throw new EgoException("Hey... Your command should be in the format: "
+                    + "event <description> /from <start date> /to <end date>!");
+        }
+
+        String[] splitDesc = event.split("/from ");
+        if (splitDesc.length < 2 || splitDesc[0].isEmpty()) {
+            throw new EgoException("Hey... better take a closer look! "
+                    + "Your task description can't be empty egoist!");
+        }
+        String description = splitDesc[0].trim();
+
+        String[] splitDates = splitDesc[1].split("/to ");
+        if (splitDates.length < 2 || splitDates[0].isEmpty() || splitDates[1].isEmpty()) {
+            throw new EgoException("Hey... start and end dates must be provided! "
+                    + "Format: event <description> /from <start date> /to <end date>.");
+        }
+        String startDate = splitDates[0].trim();
+        String endDate = splitDates[1].trim();
+        return new Event(description, startDate, endDate);
+    }
+
+    /**
      * Returns the String displaying the result of the selected task being deleted from the user's
      * task list.
      * @param taskNum The index of the task deleted from the task list.
@@ -220,26 +242,54 @@ public class Parser {
      * @throws EgoException If the index of the task to be deleted is invalid.
      */
     public String deleteTask(int taskNum) throws EgoException {
-        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
-            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
-        }
+        validateTaskIndex(taskNum);
+
         String msg = "Roger, I'll delete this task from your list!\n  ";
         Task deletedTask = this.tasks.removeTask(taskNum - 1);
         assert deletedTask != null : "Deleted task cannot be null";
         msg += deletedTask + "\n";
         msg += "Now you have " + this.tasks.getSize() + " tasks to complete!";
+
         return msg;
     }
 
-    public String findTask(String key) throws EgoException {
+    /**
+     * Finds tasks that contains the given keyword in their String representation.
+     * @param keyword The search keyword.
+     * @return A String listing matching tasks.
+     * @throws EgoException
+     */
+    public String findTask(String keyword) throws EgoException {
+        TaskList result = searchTasks(keyword);
+        return "Here are the relevant tasks you asked for:\n" + result;
+    }
+
+    /**
+     * Filters tasks by keyword.
+     * @param keyword The search keyword.
+     * @return A TaskList of tasks that match the keyword.
+     */
+    private TaskList searchTasks(String keyword) {
         TaskList result = new TaskList(new ArrayList<>());
         for (Task task : this.tasks.getTasks()) {
-            if (task.toString().contains(key)) {
+            if (task.toString().contains(keyword)) {
                 result.addTask(task);
             }
         }
+      
         assert result != null : "Command execution must always return a result";
-        String msg = "Here are the relevant tasks you asked for:\n";
-        return msg + result.toString();
+        return result;
     }
+
+    /**
+     * Validates that the given task number is within bounds.
+     * @param taskNum Index of the task.
+     * @throws EgoException If the index is invalid.
+     */
+    private void validateTaskIndex(int taskNum) throws EgoException {
+        if (taskNum <= 0 || taskNum > this.tasks.getSize()) {
+            throw new EgoException("Wow! Please input a number from 1 to " + this.tasks.getSize());
+        }
+    }
+
 }

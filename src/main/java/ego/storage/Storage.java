@@ -18,6 +18,8 @@ import java.util.Scanner;
  */
 public class Storage {
     private String filePath;
+    private static final String DONE_FLAG = "1";
+    private static final String DELIMITER = " \\| ";
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -76,28 +78,39 @@ public class Storage {
      * @return A Task object representing the task stored in the save file.
      */
     private static Task parseTask(String line) {
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(DELIMITER);
+
         String type = parts[0];
-        boolean isDone = parts[1].equals("1");
+        boolean isDone = parts[1].equals(DONE_FLAG);
         String description = parts[2];
 
-        Task task;
-        switch (type) {
-        case "T":
-            task = new ToDo(description);
-            break;
-        case "D":
-            task = new Deadline(description, LocalDate.parse(parts[3]));
-            break;
-        case "E":
-            task = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
-            break;
-        default:
-            throw new IllegalArgumentException("Unknown task type in file: " + type);
-        }
+        Task task = createTaskFromParts(type, parts, description);
+
         if (isDone) {
             task.doTask();
         }
         return task;
+    }
+
+    /**
+     * Creates a specific Task object based on the parsed components of the line in the save file.
+     * @param type The single letter dictating the type of task it is ("T" for ToDo, "D" for Deadline
+     *             and "E" for event).
+     * @param parts The full array of String components obtained by splitting the save file line.
+     * @param description The description of the task.
+     * @return A new Task object corresponding to the given type in the parsed line.
+     * @throws IllegalArgumentException if the task type is not known or supported.
+     */
+    private static Task createTaskFromParts(String type, String[] parts, String description) {
+        switch (type) {
+        case "T":
+            return new ToDo(description);
+        case "D":
+            return new Deadline(description, LocalDate.parse(parts[3]));
+        case "E":
+            return new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
+        default:
+            throw new IllegalArgumentException("Unknown task type in file: " + type);
+        }
     }
 }
