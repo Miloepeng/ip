@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,4 +75,47 @@ public class StorageTest {
 
         file.delete();
     }
+
+    @Test
+    void loadTasks_mixedTypes_parsesAllAndPreservesOrder() throws Exception {
+        // Arrange: write a realistic save-file with T/D/E lines
+        File testFile = new File(tempDir, "test-tasks.txt");
+        Storage s = new Storage(testFile.getAbsolutePath());
+        String lines = String.join(System.lineSeparator(),
+                "T | 0 | read book",
+                "D | 1 | submit report | 2025-09-30",
+                "E | 0 | hackathon | 2025-09-10 | 2025-09-12"
+        );
+        Files.writeString(testFile.toPath(), lines, StandardCharsets.UTF_8);
+
+        // Act
+        TaskList loaded = s.loadTasks();
+
+        // Assert: size & basic content checks (avoid brittle exact formats)
+        assertEquals(3, loaded.getSize());
+        assertTrue(loaded.getTask(0).toString().toLowerCase().contains("read book"));
+        assertTrue(loaded.getTask(1).toString().toLowerCase().contains("submit report"));
+        assertTrue(loaded.getTask(2).toString().toLowerCase().contains("hackathon"));
+    }
+
+    @Test
+    void saveTasks_overwritesExistingFile() throws Exception {
+        // Arrange
+        TaskList first = new TaskList(new ArrayList<>());
+        first.addTask(new ToDo("first version"));
+        storage.saveTasks(first);
+
+        // Overwrite with a different set
+        TaskList second = new TaskList(new ArrayList<>());
+        second.addTask(new ToDo("second version"));
+        storage.saveTasks(second);
+
+        // Act
+        TaskList loaded = storage.loadTasks();
+
+        // Assert: only second set remains
+        assertEquals(1, loaded.getSize());
+        assertTrue(loaded.getTask(0).toString().toLowerCase().contains("second version"));
+    }
+
 }
