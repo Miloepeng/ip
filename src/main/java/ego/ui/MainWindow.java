@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import javafx.application.Platform;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 /**
  * Controller for the main GUI.
  */
@@ -50,11 +53,32 @@ public class MainWindow extends AnchorPane {
         String input = userInput.getText();
         String response = ego.getResponse(input);
         String commandType = ego.getCommandType();
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getEgoDialog(response, egoImage, commandType)
         );
         userInput.clear();
+
+        // --- add this block ---
+        boolean isExit = "bye".equalsIgnoreCase(input.trim())
+                || "BYE".equalsIgnoreCase(commandType); // use your command type if available
+
+        if (isExit) {
+            // Optional: stop further input while farewell is visible
+            try { userInput.setDisable(true); } catch (Exception ignored) {}
+            try { sendButton.setDisable(true); } catch (Exception ignored) {}
+
+            PauseTransition delay = new PauseTransition(Duration.millis(600));
+            delay.setOnFinished(e -> {
+                // This triggers Main.java's stage.setOnCloseRequest(... -> ego.save())
+                Platform.exit();
+                // Optional: if you have non-daemon threads, also call:
+                // System.exit(0);
+            });
+            delay.play();
+        }
+        // --- end add ---
     }
 }
 
