@@ -48,6 +48,7 @@ Expected Output: `Hello there diamonds in the rough, feeling lost?
                 Find tasks by keyword
             - bye
                 Exit and save tasks`
+
 ### Adding a Todo task: `todo`
 Format: `todo <desc>`  
 Example: `todo buy shirt`  
