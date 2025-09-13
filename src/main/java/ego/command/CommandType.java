@@ -16,16 +16,16 @@ public enum CommandType {
             return INVALID;
         }
 
-        if (input.equals("list")) return LIST;
+        if (input.startsWith("list")) return LIST;
         if (input.startsWith("mark")) return MARK;
         if (input.startsWith("unmark")) return UNMARK;
         if (input.startsWith("todo")) return TODO;
         if (input.startsWith("deadline")) return DEADLINE;
         if (input.startsWith("event")) return EVENT;
         if (input.startsWith("delete")) return DELETE;
-        if (input.equals("bye")) return BYE;
+        if (input.startsWith("bye")) return BYE;
         if (input.startsWith("find")) return FIND;
-        if (input.equals("help")) return HELP;
+        if (input.startsWith("help")) return HELP;
 
         return INVALID;
     }

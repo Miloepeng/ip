@@ -1,3 +1,4 @@
-T | 1 | buy milk
-T | 0 | buy bread
+T | 0 | buy milk
 D | 0 | return book  | 2022-01-01
+T | 0 | buy shirt
+E | 0 | japan | 2025-09-13 | 2025-09-20

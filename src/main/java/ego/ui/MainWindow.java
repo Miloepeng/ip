@@ -35,7 +35,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Ego instance */
     public void setEgo(Ego ego) {
         this.ego = ego;
         // Show greeting when GUI loads
@@ -45,7 +45,7 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Ego's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -60,25 +60,19 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
 
-        // --- add this block ---
         boolean isExit = "bye".equalsIgnoreCase(input.trim())
                 || "BYE".equalsIgnoreCase(commandType); // use your command type if available
 
         if (isExit) {
-            // Optional: stop further input while farewell is visible
             try { userInput.setDisable(true); } catch (Exception ignored) {}
             try { sendButton.setDisable(true); } catch (Exception ignored) {}
 
             PauseTransition delay = new PauseTransition(Duration.millis(600));
             delay.setOnFinished(e -> {
-                // This triggers Main.java's stage.setOnCloseRequest(... -> ego.save())
                 Platform.exit();
-                // Optional: if you have non-daemon threads, also call:
-                // System.exit(0);
             });
             delay.play();
         }
-        // --- end add ---
     }
 }
 

@@ -38,7 +38,6 @@ public class Ego {
      */
 
     public static void main(String[] args) {
-        //new Ego("data/ego.txt").run();
         Application.launch(Main.class);
     }
 
